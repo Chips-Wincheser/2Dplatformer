@@ -12,12 +12,10 @@ public class Inventory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Coin>())
+        if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
         {
-            _coins.Add(collision.gameObject.GetComponent<Coin>());
+            _coins.Add(coin);
             Destroy(collision.gameObject);
-
-            Debug.Log($"Количество монеток:{_coins.Count}");
         }
     }
 }

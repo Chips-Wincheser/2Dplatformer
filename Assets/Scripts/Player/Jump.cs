@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Jump : MonoBehaviour
@@ -10,6 +11,8 @@ public class Jump : MonoBehaviour
     private Rigidbody2D _rigidbody;
 
     public event Action OnJump;
+    public event Action PlayerIsFly;
+    public event Action PlayerIsLand;
 
     private void Awake()
     {
@@ -18,15 +21,31 @@ public class Jump : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInput.OnPlayerJump+=InputHandler;
+        _playerInput.OnPlayerJump+=Jumper;
     }
 
     private void OnDisable()
     {
-        _playerInput.OnPlayerJump-=InputHandler;
+        _playerInput.OnPlayerJump-=Jumper;
     }
 
-    private void InputHandler()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<TilemapCollider2D>())
+        {
+            PlayerIsFly?.Invoke();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<TilemapCollider2D>())
+        {
+            PlayerIsLand?.Invoke();
+        }
+    }
+
+    private void Jumper()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
         OnJump?.Invoke();
