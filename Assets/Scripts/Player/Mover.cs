@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Movment : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private PlayerInput _playerInput;
@@ -19,26 +19,12 @@ public class Movment : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInput.OnPlayerRun+=InputHandler;
+        _playerInput.Runing+=ProcessHorizontalInput;
     }
 
     private void OnDisable()
     {
-        _playerInput.OnPlayerRun-=InputHandler;
-    }
-
-    private void InputHandler()
-    {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-
-        if (horizontal != 0)
-        {
-            ProcessHorizontalInput(horizontal);
-        }
-        else
-        {
-            PlayerRuning?.Invoke(horizontal);
-        }
+        _playerInput.Runing-=ProcessHorizontalInput;
     }
 
     private void ProcessHorizontalInput(float horizontal)

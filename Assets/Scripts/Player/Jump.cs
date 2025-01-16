@@ -10,9 +10,9 @@ public class Jump : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
 
-    public event Action OnJump;
-    public event Action PlayerIsFly;
-    public event Action PlayerIsLand;
+    public event Action Jumped;
+    public event Action PlayerIsFlying;
+    public event Action PlayerIsLanding;
 
     private void Awake()
     {
@@ -21,19 +21,19 @@ public class Jump : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInput.OnPlayerJump+=Jumper;
+        _playerInput.Jumping+=Jumper;
     }
 
     private void OnDisable()
     {
-        _playerInput.OnPlayerJump-=Jumper;
+        _playerInput.Jumping-=Jumper;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<TilemapCollider2D>())
         {
-            PlayerIsFly?.Invoke();
+            PlayerIsFlying?.Invoke();
         }
     }
 
@@ -41,13 +41,13 @@ public class Jump : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<TilemapCollider2D>())
         {
-            PlayerIsLand?.Invoke();
+            PlayerIsLanding?.Invoke();
         }
     }
 
     private void Jumper()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
-        OnJump?.Invoke();
+        Jumped?.Invoke();
     }
 }

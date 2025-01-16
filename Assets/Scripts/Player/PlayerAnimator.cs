@@ -3,8 +3,9 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    [SerializeField] private Movment _movment;
+    [SerializeField] private Mover _movment;
     [SerializeField] private Jump _jump;
+    [SerializeField] private PlayerInput _playerInput;
 
     private int _fly = Animator.StringToHash("fly");
     private int _isRun = Animator.StringToHash("isRun");
@@ -13,18 +14,20 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnEnable()
     {
+        _playerInput.PlayerStanding+=ToggleRunning;
         _movment.PlayerRuning+=ToggleRunning;
-        _jump.OnJump+=ToggleJump;
-        _jump.PlayerIsFly+=ToggleFly;
-        _jump.PlayerIsLand+=ToggleLand;
+        _jump.Jumped+=ToggleJump;
+        _jump.PlayerIsFlying+=ToggleFly;
+        _jump.PlayerIsLanding+=ToggleLand;
     }
 
     private void OnDisable()
     {
+        _playerInput.PlayerStanding-=ToggleRunning;
         _movment.PlayerRuning-=ToggleRunning;
-        _jump.OnJump-=ToggleJump;
-        _jump.PlayerIsFly-=ToggleFly;
-        _jump.PlayerIsLand-=ToggleLand;
+        _jump.Jumped-=ToggleJump;
+        _jump.PlayerIsFlying-=ToggleFly;
+        _jump.PlayerIsLanding-=ToggleLand;
     }
 
     private void ToggleRunning(float horizontal)
