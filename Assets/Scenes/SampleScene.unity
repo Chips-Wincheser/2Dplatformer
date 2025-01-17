@@ -377,6 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   "_patroll\u0410rea": {fileID: 299061953}
+  _scale: {x: 0, y: 0, z: 0}
 --- !u!95 &233126884
 Animator:
   serializedVersion: 5
@@ -540,6 +541,7 @@ GameObject:
   - component: {fileID: 242358625}
   - component: {fileID: 242358626}
   - component: {fileID: 242358627}
+  - component: {fileID: 242358628}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -629,11 +631,12 @@ Transform:
   m_GameObject: {fileID: 242358616}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 2, z: 0}
+  m_LocalPosition: {x: 10.44, y: 8.7, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 543292827}
+  - {fileID: 1396936885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &242358621
@@ -668,7 +671,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.09102225, y: -0.7995227}
+  m_Offset: {x: -0.09656316, y: -0.7995227}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -679,7 +682,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0924802, y: 1.9009546}
+  m_Size: {x: 0.82281137, y: 1.9009546}
   m_EdgeRadius: 0
 --- !u!50 &242358622
 Rigidbody2D:
@@ -723,6 +726,8 @@ MonoBehaviour:
   _animator: {fileID: 242358617}
   _movment: {fileID: 242358624}
   _jump: {fileID: 242358625}
+  _groundDetector: {fileID: 242358628}
+  _playerInput: {fileID: 242358626}
 --- !u!114 &242358624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,6 +756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpHeight: 16
   _playerInput: {fileID: 242358626}
+  _groundDetector: {fileID: 242358628}
 --- !u!114 &242358626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,6 +779,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c1c02cfbf800484a89fbb10f17e2fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &242358628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242358616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca98eaeb8828b949878159d04aeb119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &299061951
@@ -16372,6 +16390,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1396936884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1396936885}
+  m_Layer: 0
+  m_Name: GroundDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1396936885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396936884}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1, y: -1.84, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 242358619}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1491002324
 GameObject:
   m_ObjectHideFlags: 0
@@ -16458,6 +16507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1556835231}
+  - component: {fileID: 1556835232}
   m_Layer: 0
   m_Name: Coins
   m_TagString: Untagged
@@ -16482,6 +16532,21 @@ Transform:
   - {fileID: 874253624}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1556835232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556835230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6d1630bd859eb4fbcbce79901aa0d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coins:
+  - {fileID: 687972493}
+  - {fileID: 874253625}
 --- !u!1 &1660388699
 GameObject:
   m_ObjectHideFlags: 0
@@ -16652,6 +16717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   "_patroll\u0410rea": {fileID: 1491002325}
+  _scale: {x: 0, y: 0, z: 0}
 --- !u!95 &1761985648
 Animator:
   serializedVersion: 5

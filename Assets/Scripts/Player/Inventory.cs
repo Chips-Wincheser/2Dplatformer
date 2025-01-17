@@ -15,7 +15,6 @@ public class Inventory : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
         {
             _coins.Add(coin);
-            Destroy(collision.gameObject);
         }
     }
 }

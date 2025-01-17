@@ -3,29 +3,33 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    private KeyCode _keyCode;
-    private string _horizontal;
+    private const KeyCode _keyCode= KeyCode.Space;
+    private const string _horizontal = "Horizontal";
+
+    private bool _isJump;
 
     public event Action Jumping;
     public event Action<float> Runing;
     public event Action<float> PlayerStanding;
 
-    private void Awake()
-    {
-        _keyCode = KeyCode.Space;
-        _horizontal = "Horizontal";
-    }
-
     private void Update()
     {
         HandleMovement();
+
+        if (Input.GetKeyDown(_keyCode))
+        {
+            _isJump = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
         HandleJump();
     }
 
     private void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw(_horizontal);
-
 
         if (horizontal != 0)
         {
@@ -39,9 +43,10 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(_keyCode))
+        if (_isJump)
         {
             Jumping?.Invoke();
+            _isJump= false;
         }
     }
 }

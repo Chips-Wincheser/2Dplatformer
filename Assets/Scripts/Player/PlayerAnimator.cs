@@ -4,7 +4,8 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Mover _movment;
-    [SerializeField] private Jump _jump;
+    [SerializeField] private Jumper _jump;
+    [SerializeField] private GroundDetector _groundDetector;
     [SerializeField] private PlayerInput _playerInput;
 
     private int _fly = Animator.StringToHash("fly");
@@ -17,8 +18,8 @@ public class PlayerAnimator : MonoBehaviour
         _playerInput.PlayerStanding+=ToggleRunning;
         _movment.PlayerRuning+=ToggleRunning;
         _jump.Jumped+=ToggleJump;
-        _jump.PlayerIsFlying+=ToggleFly;
-        _jump.PlayerIsLanding+=ToggleLand;
+        _groundDetector.PlayerIsFlying+=ToggleFly;
+        _groundDetector.PlayerIsLanding+=ToggleLand;
     }
 
     private void OnDisable()
@@ -26,8 +27,8 @@ public class PlayerAnimator : MonoBehaviour
         _playerInput.PlayerStanding-=ToggleRunning;
         _movment.PlayerRuning-=ToggleRunning;
         _jump.Jumped-=ToggleJump;
-        _jump.PlayerIsFlying-=ToggleFly;
-        _jump.PlayerIsLanding-=ToggleLand;
+        _groundDetector.PlayerIsFlying-=ToggleFly;
+        _groundDetector.PlayerIsLanding-=ToggleLand;
     }
 
     private void ToggleRunning(float horizontal)
@@ -47,7 +48,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void ToggleFly()
     {
-        _animator.SetInteger(_fly, -1);
+        _animator.SetInteger(_fly, 0);
         _isJumped = false;
     }
 
@@ -55,7 +56,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (_isJumped==false)
         {
-            _animator.SetInteger(_fly, 0);
+            _animator.SetInteger(_fly, -1);
         }
     }
 }
