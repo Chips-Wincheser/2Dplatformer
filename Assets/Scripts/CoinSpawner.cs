@@ -3,27 +3,20 @@ using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
-    [SerializeField] private List<Coin> _coins;
+    [SerializeField] private Inventory _inventory;
 
     private void OnEnable()
     {
-        foreach (Coin coin in _coins)
-        {
-            coin.CoinPickedUp+=DestroyCoin;
-        }
+        _inventory.PlayerPickedUp+=DestroyCoin;
     }
 
     private void OnDisable()
     {
-        foreach (Coin coin in _coins)
-        {
-            coin.CoinPickedUp-=DestroyCoin;
-        }
+        _inventory.PlayerPickedUp-=DestroyCoin;
     }
 
     private void DestroyCoin(Coin coin)
     {
-        _coins.Remove(coin);
         Destroy(coin.gameObject);
     }
 }

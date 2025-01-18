@@ -4,14 +4,24 @@ using UnityEngine.Tilemaps;
 
 public class GroundDetector : MonoBehaviour
 {
+    private int _numberOccurrences;
+
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
+
+    private void Awake()
+    {
+        _numberOccurrences = 0;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<TilemapCollider2D>())
         {
-            PlayerIsLanding?.Invoke();
+            _numberOccurrences++;
+
+            if (_numberOccurrences>0) 
+                PlayerIsLanding?.Invoke();
         }
     }
 

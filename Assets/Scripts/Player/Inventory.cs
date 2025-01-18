@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
     private List<Coin> _coins;
+
+    public event Action<Coin> PlayerPickedUp;
 
     private void Awake()
     {
@@ -15,6 +18,7 @@ public class Inventory : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
         {
             _coins.Add(coin);
+            PlayerPickedUp?.Invoke(coin);
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    private const KeyCode _keyCode= KeyCode.Space;
+    private const KeyCode CodeKey= KeyCode.Space;
     private const string _horizontal = "Horizontal";
 
     private bool _isJump;
@@ -16,7 +16,7 @@ public class PlayerInput : MonoBehaviour
     {
         HandleMovement();
 
-        if (Input.GetKeyDown(_keyCode))
+        if (Input.GetKeyDown(CodeKey))
         {
             _isJump = true;
         }
