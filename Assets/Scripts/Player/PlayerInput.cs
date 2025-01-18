@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     private const KeyCode CodeKey= KeyCode.Space;
-    private const string _horizontal = "Horizontal";
+    private const string Horizontal = "Horizontal";
 
     private bool _isJump;
 
@@ -29,14 +29,12 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleMovement()
     {
-        float horizontal = Input.GetAxisRaw(_horizontal);
+        float horizontal = Input.GetAxisRaw(Horizontal);
 
-        if (horizontal != 0)
+        Runing?.Invoke(horizontal);
+        
+        if (horizontal == 0)
         {
-            Runing?.Invoke(horizontal);
-        }
-        else 
-        { 
             PlayerStanding?.Invoke(horizontal);
         }
     }

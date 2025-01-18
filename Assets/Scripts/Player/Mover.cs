@@ -9,6 +9,7 @@ public class Mover : MonoBehaviour
 
     private Vector2 _direction;
     private Vector3 _originalScale;
+    private Rigidbody2D _rigidbody2D;
 
     public event Action<float> PlayerRuning;
 
@@ -16,6 +17,7 @@ public class Mover : MonoBehaviour
     {
         _direction = transform.right.normalized;
         _originalScale = transform.localScale;
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -30,16 +32,8 @@ public class Mover : MonoBehaviour
 
     private void ProcessHorizontalInput(float horizontal)
     {
-        if (horizontal < 0)
-        {
-            transform.Translate(-_direction*_speed*Time.deltaTime, Space.World);
-            _rotator.Rotate(horizontal);
-        }
-        else if (horizontal > 0)
-        {
-            transform.Translate(_direction*_speed*Time.deltaTime, Space.World);
-            _rotator.Rotate(horizontal);
-        }
+        _rigidbody2D.velocity = new Vector2(horizontal * _speed, _rigidbody2D.velocity.y);
+        _rotator.Rotate(horizontal);
 
         PlayerRuning?.Invoke(horizontal);
     }

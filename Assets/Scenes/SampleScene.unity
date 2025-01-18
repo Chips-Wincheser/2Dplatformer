@@ -542,6 +542,7 @@ GameObject:
   - component: {fileID: 242358626}
   - component: {fileID: 242358627}
   - component: {fileID: 242358628}
+  - component: {fileID: 242358629}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -630,12 +631,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242358616}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10.44, y: 8.7, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 543292827}
   - {fileID: 1396936885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 242358617}
-  _movment: {fileID: 242358624}
+  _movement: {fileID: 242358624}
   _jump: {fileID: 242358625}
   _groundDetector: {fileID: 242358628}
   _playerInput: {fileID: 242358626}
@@ -742,6 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _playerInput: {fileID: 242358626}
+  _rotator: {fileID: 242358629}
 --- !u!114 &242358625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +792,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ca98eaeb8828b949878159d04aeb119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &242358629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242358616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cc462d4dbe4b74e899e8ef60ca6cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &299061951
@@ -5192,6 +5205,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5267,12 +5281,25 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00000011920929, y: 0.5, z: -6.666667}
-  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_LocalPosition: {x: 10.44, y: 9.45, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 543292827}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1540a48c4c1104c87a6ab87be31344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMover: {fileID: 242358624}
 --- !u!1 &528240505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5357,38 +5384,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &543292826
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 543292827}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &543292827
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543292826}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 519420032}
-  m_Father: {fileID: 242358619}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &598759463
 GameObject:
   m_ObjectHideFlags: 0
@@ -16544,9 +16539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6d1630bd859eb4fbcbce79901aa0d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coins:
-  - {fileID: 687972493}
-  - {fileID: 874253625}
+  _inventory: {fileID: 242358627}
 --- !u!1 &1660388699
 GameObject:
   m_ObjectHideFlags: 0
@@ -18532,7 +18525,8 @@ SceneRoots:
   - {fileID: 1122984339}
   - {fileID: 121485756}
   - {fileID: 1660388700}
-  - {fileID: 242358619}
   - {fileID: 381314656}
   - {fileID: 1324075091}
   - {fileID: 1556835231}
+  - {fileID: 242358619}
+  - {fileID: 519420032}
