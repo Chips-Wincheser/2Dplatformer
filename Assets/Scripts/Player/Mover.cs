@@ -5,6 +5,7 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private Rotator _rotator;
 
     private Vector2 _direction;
     private Vector3 _originalScale;
@@ -32,12 +33,12 @@ public class Mover : MonoBehaviour
         if (horizontal < 0)
         {
             transform.Translate(-_direction*_speed*Time.deltaTime, Space.World);
-            transform.localScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
+            _rotator.Rotate(horizontal);
         }
         else if (horizontal > 0)
         {
             transform.Translate(_direction*_speed*Time.deltaTime, Space.World);
-            transform.localScale = new Vector3(_originalScale.x, _originalScale.y, _originalScale.z);
+            _rotator.Rotate(horizontal);
         }
 
         PlayerRuning?.Invoke(horizontal);
