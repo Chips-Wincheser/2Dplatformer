@@ -20,15 +20,15 @@ public class Jumper : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInput.Jumping+=TryJump;
+        _playerInput.Jumping+=Jump;
     }
 
     private void OnDisable()
     {
-        _playerInput.Jumping-=TryJump;
+        _playerInput.Jumping-=Jump;
     }
 
-    private void TryJump()
+    private void Jump()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
         Jumped?.Invoke();   
