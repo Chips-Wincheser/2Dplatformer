@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Jumper : MonoBehaviour
@@ -31,6 +30,7 @@ public class Jumper : MonoBehaviour
     private void Jump()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
+
         Jumped?.Invoke();   
     }
 }

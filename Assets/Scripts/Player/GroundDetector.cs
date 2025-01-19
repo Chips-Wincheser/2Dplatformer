@@ -1,35 +1,47 @@
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class GroundDetector : MonoBehaviour
 {
-    private int _numberOccurrences;
+    [SerializeField] private float _groundCheckRadius = 0.2f;
+    [SerializeField] private Transform _groundCheckPointDown;
+
+    private bool _isGroundedDown;
 
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
-
-    private void Awake()
+    
+    private void Update()
     {
-        _numberOccurrences = 0;
+        PlayerStateNotifier();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void PlayerStateNotifier()
     {
-        if (collision.gameObject.GetComponent<TilemapCollider2D>())
+        _isGroundedDown = IsSurfaceDetected(_groundCheckPointDown);
+
+        if (_isGroundedDown)
         {
-            _numberOccurrences++;
-
-            if (_numberOccurrences>0) 
-                PlayerIsLanding?.Invoke();
+            PlayerIsLanding?.Invoke();
         }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<TilemapCollider2D>())
+        else
         {
             PlayerIsFlying?.Invoke();
         }
+    }
+
+    private bool IsSurfaceDetected(Transform groundCheckPoint)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheckPoint.position, _groundCheckRadius);
+
+        foreach (var hit in hits)
+        {
+            if (hit.GetComponent<GroundTilemap>() != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

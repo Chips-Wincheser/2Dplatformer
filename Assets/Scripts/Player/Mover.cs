@@ -1,22 +1,19 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private Rotator _rotator;
 
-    private Vector2 _direction;
-    private Vector3 _originalScale;
     private Rigidbody2D _rigidbody2D;
 
     public event Action<float> PlayerRuning;
 
     private void Awake()
     {
-        _direction = transform.right.normalized;
-        _originalScale = transform.localScale;
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
