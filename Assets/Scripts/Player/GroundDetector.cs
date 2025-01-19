@@ -36,7 +36,7 @@ public class GroundDetector : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.GetComponent<GroundTilemap>() != null)
+            if (hit.GetComponent<Ground>() != null)
             {
                 return true;
             }

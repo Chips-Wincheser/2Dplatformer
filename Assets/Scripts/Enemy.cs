@@ -1,34 +1,43 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed=5f;
     [SerializeField] private Collider2D _patroll¿rea;
-    [SerializeField] private Vector3 _scale;
+    [SerializeField] private Rotator _rotatetor;
 
-    private Vector2 _direction;
+    private float _direction;
     private float _areaMin;
     private float _areaMax;
+    private Rigidbody2D _rigidbody2D;
+    private bool _isAtEndPoint = false;
 
     private void Awake()
     {
-        _direction = transform.right.normalized;
-        _areaMin = Mathf.Round(_patroll¿rea.bounds.min.x);
-        _areaMax = Mathf.Round(_patroll¿rea.bounds.max.x);
+        _rigidbody2D=GetComponent<Rigidbody2D>();
+        _direction = 1;
 
-        _scale = transform.localScale;
+        _areaMin = _patroll¿rea.bounds.min.x;
+        _areaMax = _patroll¿rea.bounds.max.x;
     }
 
     private void Update()
     {
-        if(Mathf.Round(transform.position.x) == _areaMax || Mathf.Round(transform.position.x) == _areaMin)
+        if (Mathf.Abs(transform.position.x - _areaMax) < 0.1f || Mathf.Abs(transform.position.x - _areaMin) < 0.1f)
         {
-            _scale.x=-_scale.x;
-            _direction=-_direction;
-
-            transform.localScale = new Vector3(_scale.x, _scale.y, _scale.z);
+            if(_isAtEndPoint==false)
+            {
+                _direction=-_direction;
+                _rotatetor.Rotate(_direction);
+                _isAtEndPoint = true;
+            }
         }
-
-        transform.Translate(_direction*_speed*Time.deltaTime, Space.World);
+        else
+        {
+            _isAtEndPoint=false;
+        }
+        
+        _rigidbody2D.velocity = new Vector2(_direction * _speed, _rigidbody2D.velocity.y);
     }
 }
