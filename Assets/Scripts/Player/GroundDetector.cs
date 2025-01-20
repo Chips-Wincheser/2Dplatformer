@@ -10,8 +10,8 @@ public class GroundDetector : MonoBehaviour
 
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
-    
-    private void Update()
+
+    private void FixedUpdate()
     {
         PlayerStateNotifier();
     }

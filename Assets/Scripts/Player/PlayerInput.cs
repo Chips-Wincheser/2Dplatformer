@@ -14,8 +14,6 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
-
         if (Input.GetKeyDown(CodeKey))
         {
             _isJump = true;
@@ -25,6 +23,7 @@ public class PlayerInput : MonoBehaviour
     private void FixedUpdate()
     {
         HandleJump();
+        HandleMovement();
     }
 
     private void HandleMovement()

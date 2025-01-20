@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coinPrefab;
     [SerializeField] private int _poolSize = 3;
-    [SerializeField] private Transform[] _spawnArea;
+    [SerializeField] private Transform[] _spawnPoints;
 
     private Queue<Coin> _coinPool = new Queue<Coin>();
 
@@ -15,6 +13,11 @@ public class CoinSpawner : MonoBehaviour
     {
         InitializePool();
         SpawnCoin();
+
+        if (_poolSize > _spawnPoints.Length)
+        {
+            _poolSize = _spawnPoints.Length;
+        }
     }
 
     private void OnDisable()
@@ -39,14 +42,18 @@ public class CoinSpawner : MonoBehaviour
 
     private void SpawnCoin()
     {
-        if (_coinPool.Count > 0)
+        int spawnCount = _coinPool.Count;
+
+        if (spawnCount > _spawnPoints.Length)
         {
-            for (int i = 0; i < _poolSize; i++)
-            {
-                Coin coin = _coinPool.Dequeue();
-                coin.transform.position = _spawnArea[i].position;
-                coin.gameObject.SetActive(true);
-            }
+            spawnCount = _spawnPoints.Length;
+        }
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Coin coin = _coinPool.Dequeue();
+            coin.transform.position = _spawnPoints[i].position;
+            coin.gameObject.SetActive(true);
         }
     }
 
