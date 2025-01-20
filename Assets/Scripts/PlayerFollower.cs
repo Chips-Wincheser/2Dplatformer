@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraUpdatePosition : MonoBehaviour
+public class PlayerFollower : MonoBehaviour
 {
     [SerializeField] private Mover _playerMover;
 
