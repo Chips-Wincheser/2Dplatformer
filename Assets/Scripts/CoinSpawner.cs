@@ -12,7 +12,7 @@ public class CoinSpawner : MonoBehaviour
     private void Awake()
     {
         InitializePool();
-        SpawnCoin();
+        PlaceCoinsOnPoints();
 
         if (_poolSize > _spawnPoints.Length)
         {
@@ -40,7 +40,7 @@ public class CoinSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnCoin()
+    private void PlaceCoinsOnPoints()
     {
         int spawnCount = _coinPool.Count;
 

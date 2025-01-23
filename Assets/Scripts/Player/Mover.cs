@@ -9,6 +9,8 @@ public class Mover : MonoBehaviour
     [SerializeField] private Rotator _rotator;
 
     private Rigidbody2D _rigidbody2D;
+    private bool _isMovmentLock;
+    private float _horizontal;
 
     public event Action<float> PlayerRuning;
 
@@ -22,6 +24,16 @@ public class Mover : MonoBehaviour
         _playerInput.Runing+=ProcessHorizontalInput;
     }
 
+    private void FixedUpdate()
+    {
+        if (_isMovmentLock==false)
+        {
+            _rigidbody2D.velocity = new Vector2(_horizontal * _speed, _rigidbody2D.velocity.y);
+            _rotator.Rotate(_horizontal);
+            _isMovmentLock = true;
+        }
+    }
+
     private void OnDisable()
     {
         _playerInput.Runing-=ProcessHorizontalInput;
@@ -29,8 +41,8 @@ public class Mover : MonoBehaviour
 
     private void ProcessHorizontalInput(float horizontal)
     {
-        _rigidbody2D.velocity = new Vector2(horizontal * _speed, _rigidbody2D.velocity.y);
-        _rotator.Rotate(horizontal);
+        _horizontal=horizontal;
+        _isMovmentLock=false;
 
         PlayerRuning?.Invoke(horizontal);
     }

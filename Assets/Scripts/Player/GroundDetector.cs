@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
@@ -7,16 +8,17 @@ public class GroundDetector : MonoBehaviour
     [SerializeField] private Transform _groundCheckPointDown;
 
     private bool _isGroundedDown;
+    private Collider2D[] _hits = new Collider2D[1];
 
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
 
     private void FixedUpdate()
     {
-        PlayerStateNotifier();
+        NotifierStatePlayer();
     }
 
-    private void PlayerStateNotifier()
+    private void NotifierStatePlayer()
     {
         _isGroundedDown = IsSurfaceDetected(_groundCheckPointDown);
 
@@ -32,11 +34,11 @@ public class GroundDetector : MonoBehaviour
 
     private bool IsSurfaceDetected(Transform groundCheckPoint)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheckPoint.position, _groundCheckRadius);
+        int hitCount = Physics2D.OverlapCircleNonAlloc(groundCheckPoint.position, _groundCheckRadius, _hits);
 
-        foreach (var hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
-            if (hit.GetComponent<Ground>() != null)
+            if (_hits[i].GetComponent<Ground>() != null)
             {
                 return true;
             }

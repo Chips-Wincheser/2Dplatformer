@@ -9,6 +9,7 @@ public class Jumper : MonoBehaviour
     [SerializeField] private GroundDetector _groundDetector;
 
     private Rigidbody2D _rigidbody;
+    private bool _isJump;
 
     public event Action Jumped;
 
@@ -22,6 +23,17 @@ public class Jumper : MonoBehaviour
         _playerInput.Jumping+=Jump;
     }
 
+    private void FixedUpdate()
+    {
+        if (_isJump)
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
+
+            Jumped?.Invoke();
+            _isJump = false;
+        }
+    }
+
     private void OnDisable()
     {
         _playerInput.Jumping-=Jump;
@@ -29,8 +41,6 @@ public class Jumper : MonoBehaviour
 
     private void Jump()
     {
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
-
-        Jumped?.Invoke();   
+        _isJump=true;
     }
 }
