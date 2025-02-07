@@ -1,65 +1,36 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coinPrefab;
-    [SerializeField] private int _poolSize = 3;
     [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private Inventory _playerInventory;
 
-    private Queue<Coin> _coinPool = new Queue<Coin>();
-
-    private void Awake()
+    private void OnEnable()
     {
-        InitializePool();
-        PlaceCoinsOnPoints();
+        _playerInventory.Collected += OnCoinCollected;
+    }
 
-        if (_poolSize > _spawnPoints.Length)
-        {
-            _poolSize = _spawnPoints.Length;
-        }
+    private void Start()
+    {
+        SpawnCoins();
     }
 
     private void OnDisable()
     {
-        foreach (Coin coin in _coinPool)
+        _playerInventory.Collected -= OnCoinCollected;
+    }
+
+    private void SpawnCoins()
+    {
+        foreach (var point in _spawnPoints)
         {
-            coin.PlayerPickedUp-=ReturnCoinToPool;
+            Coin coin = Instantiate(_coinPrefab, point.position, Quaternion.identity);
         }
     }
 
-    private void InitializePool()
+    private void OnCoinCollected(Coin coin)
     {
-        for (int i = 0; i < _poolSize; i++)
-        {
-            Coin coin = Instantiate(_coinPrefab, transform);
-            coin.gameObject.SetActive(false);
-            _coinPool.Enqueue(coin);
-
-            coin.PlayerPickedUp+=ReturnCoinToPool;
-        }
-    }
-
-    private void PlaceCoinsOnPoints()
-    {
-        int spawnCount = _coinPool.Count;
-
-        if (spawnCount > _spawnPoints.Length)
-        {
-            spawnCount = _spawnPoints.Length;
-        }
-
-        for (int i = 0; i < spawnCount; i++)
-        {
-            Coin coin = _coinPool.Dequeue();
-            coin.transform.position = _spawnPoints[i].position;
-            coin.gameObject.SetActive(true);
-        }
-    }
-
-    private void ReturnCoinToPool(Coin coin)
-    {
-        coin.gameObject.SetActive(false);
-        _coinPool.Enqueue(coin);
+        Destroy(coin.gameObject);
     }
 }

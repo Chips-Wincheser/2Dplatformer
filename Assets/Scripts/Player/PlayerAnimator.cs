@@ -16,7 +16,7 @@ public class PlayerAnimator : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.PlayerStanding += StopRunning;
-        _movement.PlayerRuning += PlayRunning;
+        _movement.PlayerRunning += PlayRunning;
         _jump.Jumped += PlayJumping;
         _groundDetector.PlayerIsFlying += PlayFlying;
         _groundDetector.PlayerIsLanding += StopFlying;
@@ -25,7 +25,7 @@ public class PlayerAnimator : MonoBehaviour
     private void OnDisable()
     {
         _playerInput.PlayerStanding -= StopRunning;
-        _movement.PlayerRuning -= PlayRunning;
+        _movement.PlayerRunning -= PlayRunning;
         _jump.Jumped -= PlayJumping;
         _groundDetector.PlayerIsFlying -= PlayFlying;
         _groundDetector.PlayerIsLanding -= StopFlying;

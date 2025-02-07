@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
     private const string Horizontal = "Horizontal";
 
     public event Action Jumping;
-    public event Action<float> Runing;
+    public event Action<float> Running;
     public event Action<float> PlayerStanding;
 
     private void Update()
@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw(Horizontal);
-        Runing?.Invoke(horizontal);
+        Running?.Invoke(horizontal);
 
         if (horizontal == 0)
         {

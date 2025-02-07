@@ -5,7 +5,6 @@ using UnityEngine;
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _jumpHeight = 16f;
-    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private GroundDetector _groundDetector;
 
     private Rigidbody2D _rigidbody;
@@ -18,29 +17,19 @@ public class Jumper : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void OnEnable()
-    {
-        _playerInput.Jumping+=Jump;
-    }
-
     private void FixedUpdate()
     {
         if (_isJump)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
-
             Jumped?.Invoke();
             _isJump = false;
         }
     }
 
-    private void OnDisable()
+    public void AttemptJump()
     {
-        _playerInput.Jumping-=Jump;
-    }
-
-    private void Jump()
-    {
-        _isJump=true;
+        if (_groundDetector.IsGrounded)
+            _isJump = true;
     }
 }

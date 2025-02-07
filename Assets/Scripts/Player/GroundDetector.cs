@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
@@ -15,10 +14,10 @@ public class GroundDetector : MonoBehaviour
 
     private void FixedUpdate()
     {
-        NotifierStatePlayer();
+        NotifyPlayerState();
     }
 
-    private void NotifierStatePlayer()
+    private void NotifyPlayerState()
     {
         _isGroundedDown = IsSurfaceDetected(_groundCheckPointDown);
 
@@ -46,4 +45,6 @@ public class GroundDetector : MonoBehaviour
 
         return false;
     }
+
+    public bool IsGrounded => _isGroundedDown;
 }
