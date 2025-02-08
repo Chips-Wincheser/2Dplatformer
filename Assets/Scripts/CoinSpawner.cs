@@ -4,21 +4,10 @@ public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coinPrefab;
     [SerializeField] private Transform[] _spawnPoints;
-    [SerializeField] private Inventory _playerInventory;
-
-    private void OnEnable()
-    {
-        _playerInventory.Collected += OnCoinCollected;
-    }
 
     private void Start()
     {
         SpawnCoins();
-    }
-
-    private void OnDisable()
-    {
-        _playerInventory.Collected -= OnCoinCollected;
     }
 
     private void SpawnCoins()
@@ -26,6 +15,7 @@ public class CoinSpawner : MonoBehaviour
         foreach (var point in _spawnPoints)
         {
             Coin coin = Instantiate(_coinPrefab, point.position, Quaternion.identity);
+            coin.Collected += OnCoinCollected;
         }
     }
 
