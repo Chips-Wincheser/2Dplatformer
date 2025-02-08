@@ -20,7 +20,7 @@ public class Mover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_isMovementLock)
+        if (_isMovementLock==false)
         {
             _rigidbody2D.velocity = new Vector2(_horizontal * _speed, _rigidbody2D.velocity.y);
             _rotator.Rotate(_horizontal);

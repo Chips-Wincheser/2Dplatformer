@@ -9,6 +9,8 @@ public class GroundDetector : MonoBehaviour
     private bool _isGroundedDown;
     private Collider2D[] _hits = new Collider2D[1];
 
+    public bool IsGrounded => _isGroundedDown;
+
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
 
@@ -45,6 +47,4 @@ public class GroundDetector : MonoBehaviour
 
         return false;
     }
-
-    public bool IsGrounded => _isGroundedDown;
 }
