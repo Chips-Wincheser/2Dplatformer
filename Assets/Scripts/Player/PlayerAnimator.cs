@@ -6,6 +6,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private int _fly = Animator.StringToHash("fly");
     private int _isRun = Animator.StringToHash("isRun");
+    private int _isAttack = Animator.StringToHash("isAttack");
 
     public void PlayRunning(bool isRunning)
     {
@@ -25,5 +26,11 @@ public class PlayerAnimator : MonoBehaviour
     public void StopFlying()
     {
         _animator.SetInteger(_fly, -1);
+    }
+
+    public void PlayAttack(bool isAttacking)
+    {
+        _animator.SetBool(_isAttack, isAttacking);
+        
     }
 }

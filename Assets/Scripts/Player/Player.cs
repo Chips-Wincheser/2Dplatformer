@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
         _playerInput.Jumping += OnJump;
         _playerInput.Running += OnRun;
         _playerInput.PlayerStanding += OnStopRun;
+        _playerInput.Attacked+=OnPlayAttack;
 
         _groundDetector.PlayerIsFlying += OnFly;
         _groundDetector.PlayerIsLanding += OnLand;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
         _playerInput.Jumping -= OnJump;
         _playerInput.Running -= OnRun;
         _playerInput.PlayerStanding -= OnStopRun;
+        _playerInput.Attacked-=OnPlayAttack;
 
         _groundDetector.PlayerIsFlying -= OnFly;
         _groundDetector.PlayerIsLanding -= OnLand;
@@ -53,5 +55,10 @@ public class Player : MonoBehaviour
     private void OnLand()
     {
         _animator.StopFlying();
+    }
+
+    private void OnPlayAttack(bool isAttacking)
+    {
+        _animator.PlayAttack(isAttacking);
     }
 }

@@ -3,16 +3,26 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
-    [SerializeField] private float _groundCheckRadius = 0.2f;
-    [SerializeField] private Transform _groundCheckPointDown;
+    [SerializeField] private GroundTrigger _groundTrigger;
 
     private bool _isGroundedDown;
-    private Collider2D[] _hits = new Collider2D[1];
 
     public bool IsGrounded => _isGroundedDown;
 
     public event Action PlayerIsFlying;
     public event Action PlayerIsLanding;
+
+    private void OnEnable()
+    {
+        _groundTrigger.Detected+=TouchGround;
+        _groundTrigger.Lost+=LostGround;
+    }
+
+    private void OnDisable()
+    {
+        _groundTrigger.Detected-=TouchGround;
+        _groundTrigger.Lost-=LostGround;
+    }
 
     private void FixedUpdate()
     {
@@ -21,8 +31,6 @@ public class GroundDetector : MonoBehaviour
 
     private void NotifyPlayerState()
     {
-        _isGroundedDown = IsSurfaceDetected(_groundCheckPointDown);
-
         if (_isGroundedDown)
         {
             PlayerIsLanding?.Invoke();
@@ -33,18 +41,13 @@ public class GroundDetector : MonoBehaviour
         }
     }
 
-    private bool IsSurfaceDetected(Transform groundCheckPoint)
+    private void TouchGround()
     {
-        int hitCount = Physics2D.OverlapCircleNonAlloc(groundCheckPoint.position, _groundCheckRadius, _hits);
+        _isGroundedDown= true;
+    }
 
-        for (int i = 0; i < hitCount; i++)
-        {
-            if (_hits[i].GetComponent<Ground>() != null)
-            {
-                return true;
-            }
-        }
-
-        return false;
+    private void LostGround()
+    {
+        _isGroundedDown= false;
     }
 }
