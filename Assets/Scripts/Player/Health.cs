@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Health : MonoBehaviour
 {
-    [SerializeField] private Attaker _player;
+    [SerializeField] private Attaker _playerAttaker;
     [SerializeField] private EnemyAttacker[] _enemyAttackers;
-    [SerializeField] private float _stopThresholdAttack = 2f;
+
     [SerializeField] private Vector2 _damageForce;
     [SerializeField] private EnemyMover _enemyMover;
 
@@ -24,49 +24,48 @@ public class Health : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_player != null)
+        if (_playerAttaker != null)
         {
-            _player.Attacked += TakeDamageFromPlayer;
+            _playerAttaker.Attacked += TakeDamage;
         }
 
-        foreach (var enemyAttack in _enemyAttackers)
+        if(_enemyAttackers != null)
         {
-            enemyAttack.Attaced += TakeDamageFromEnemy;
+            foreach (var enemyAttack in _enemyAttackers)
+            {
+                enemyAttack.Attaced += TakeDamage;
+            }
         }
     }
 
     private void OnDisable()
     {
-        if (_player != null)
+        if (_playerAttaker != null)
         {
-            _player.Attacked -= TakeDamageFromPlayer;
+            _playerAttaker.Attacked -= TakeDamage;
         }
 
-        foreach (var enemyAttack in _enemyAttackers)
+        if (_enemyAttackers != null)
         {
-            enemyAttack.Attaced -= TakeDamageFromEnemy;
+            foreach (var enemyAttack in _enemyAttackers)
+            {
+                enemyAttack.Attaced -= TakeDamage;
+            }
         }
     }
 
-    private void TakeDamageFromPlayer(bool isAttacking)
+    private void TakeDamage()
     {
-        if (_numberTimes == 0 && isAttacking && (_player.transform.position - transform.position).sqrMagnitude < _stopThresholdAttack)
+        if (_playerAttaker != null)
         {
             float direction = _enemyMover.Direction;
-
-            StartCoroutine(ChangeColorTemporarily());
 
             _rigidbody.AddForce(new Vector2(_damageForce.x * -direction, _damageForce.y), ForceMode2D.Impulse);
             _enemyMover.enabled = false;
         }
-    }
 
-    private void TakeDamageFromEnemy(bool isFarAway)
-    {
-        if (_numberTimes == 0 && isFarAway)
-        {
+        if (_numberTimes == 0)
             StartCoroutine(ChangeColorTemporarily());
-        }
     }
 
     private IEnumerator ChangeColorTemporarily()

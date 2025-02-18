@@ -4,22 +4,24 @@ using UnityEngine;
 public class EnemyAttacker : MonoBehaviour
 {
     [SerializeField] private EnemyMover _enemyMover;
-    [SerializeField] private Enemy _enemy;
 
-    public event Action<bool> Attaced;
+    public event Action Attaced;
 
     private void OnEnable()
     {
-        _enemyMover.CameClose+=TakeDamage;
+        _enemyMover.CameClose+=GiveDamage;
     }
 
     private void OnDisable()
     {
-        _enemyMover.CameClose-=TakeDamage;
+        _enemyMover.CameClose-=GiveDamage;
     } 
 
-    private void TakeDamage(bool isFarAway)
+    private void GiveDamage(bool isFarAway)
     {
-        Attaced?.Invoke(isFarAway);
+        if(isFarAway)
+        {
+            Attaced?.Invoke();
+        }
     }
 }

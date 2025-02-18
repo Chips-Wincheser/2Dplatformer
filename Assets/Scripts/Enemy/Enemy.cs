@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemyAnimation _enemyAnimation;
+    [SerializeField] private EnemyAnimator _enemyAnimation;
     [SerializeField] private EnemyMover _enemyMover;
 
     private void OnEnable()

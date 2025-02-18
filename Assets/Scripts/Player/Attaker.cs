@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Attaker : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private EnemyAttacker[] _enemyAttackers;
+    [SerializeField] private float _stopThresholdAttack = 2f;
 
-    public event Action<bool> Attacked;
+    public event Action Attacked;
 
     private void OnEnable()
     {
@@ -18,8 +19,14 @@ public class Attaker : MonoBehaviour
         _playerInput.Attacked-=Attack;
     }
 
-    private void Attack(bool _isAttacking)
+    private void Attack(bool isAttacking)
     {
-        Attacked?.Invoke(_isAttacking);
+        foreach (var enemy in _enemyAttackers)
+        {
+            if (isAttacking && (enemy.transform.position - transform.position).sqrMagnitude < _stopThresholdAttack)
+            {
+                Attacked?.Invoke();
+            }
+        }
     }
 }
