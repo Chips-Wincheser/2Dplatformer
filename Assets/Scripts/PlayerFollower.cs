@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerFollower : MonoBehaviour
 {
-    [SerializeField] private Mover _playerMover;
+    [SerializeField] private Transform _player;
 
     private void LateUpdate()
     {
-        transform.position=new Vector3(_playerMover.transform.position.x, _playerMover.transform.position.y,transform.position.z);
+        transform.position=new Vector3(_player.transform.position.x, _player.transform.position.y,transform.position.z);
     }
 }

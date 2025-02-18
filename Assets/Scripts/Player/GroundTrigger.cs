@@ -10,15 +10,15 @@ public class GroundTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Detected—ollision(Detected, collision);
+        DetectedCollision(Detected, collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Detected—ollision(Lost, collision);
+        DetectedCollision(Lost, collision);
     }
 
-    private void Detected—ollision(Action Action, Collider2D collision)
+    private void DetectedCollision(Action Action, Collider2D collision)
     {
         if ((_groundLayerMask & (1 << collision.gameObject.layer)) != 0)
         {

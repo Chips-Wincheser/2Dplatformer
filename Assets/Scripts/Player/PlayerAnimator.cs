@@ -4,9 +4,9 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
-    private int _fly = Animator.StringToHash("fly");
-    private int _isRun = Animator.StringToHash("isRun");
-    private int _isAttack = Animator.StringToHash("isAttack");
+    private readonly int _fly = Animator.StringToHash("fly");
+    private readonly int _isRun = Animator.StringToHash("isRun");
+    private readonly int _isAttack = Animator.StringToHash("isAttack");
 
     public void PlayRunning(bool isRunning)
     {

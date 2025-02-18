@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour
+public class EnemyAttacker : MonoBehaviour
 {
     [SerializeField] private EnemyMover _enemyMover;
     [SerializeField] private Enemy _enemy;
