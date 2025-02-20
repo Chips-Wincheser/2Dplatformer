@@ -1,22 +1,33 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemyAnimator _enemyAnimation;
-    [SerializeField] private EnemyMover _enemyMover;
+    [SerializeField] private Transform[] _wayPoints;
+    [SerializeField] private rotat _rotator;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _stopThreshold = 0.1f;
+
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _runClip;
+
+    private int _currentWaypoint = 0;
+    private float _direction = 1;
 
     private void OnEnable()
     {
-        _enemyMover.CameClose+=OnPlayAttack;
+        _audioSource.Play();
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        _enemyMover.CameClose-=OnPlayAttack;
-    }
+        if ((_wayPoints[_currentWaypoint].position-transform.position).sqrMagnitude<_stopThreshold)
+        {
+            _currentWaypoint = ++_currentWaypoint % _wayPoints.Length;
+            _direction=-_direction;
+            _rotator.Rotate(_direction);
+        }
 
-    private void OnPlayAttack(bool isFarAway)
-    {
-        _enemyAnimation.PlayAttack(isFarAway);
+        transform.position = Vector3.MoveTowards(transform.position, _wayPoints[_currentWaypoint].position,
+            _speed * Time.deltaTime);
     }
 }

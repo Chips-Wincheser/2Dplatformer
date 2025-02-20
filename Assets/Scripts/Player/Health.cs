@@ -1,93 +1,94 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Health : MonoBehaviour
 {
-    [SerializeField] private Attaker _playerAttaker;
-    [SerializeField] private EnemyAttacker[] _enemyAttackers;
+    [SerializeField] private List <Attack> _enemys;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _deathClip;
 
-    [SerializeField] private Vector2 _damageForce;
-    [SerializeField] private EnemyMover _enemyMover;
+    private float _health;
+    private float _healthMax=100;
+    private float _healthMin=0;
+    private float _delay=0.2f;
 
+    private Coroutine _takeDamages;
     private WaitForSeconds _waitForSeconds;
-    private float _delay = 0.5f;
-    private int _numberTimes = 0;
-    private int _numberTransfusions = 3;
-    private Rigidbody2D _rigidbody;
+
+    public bool IsDead=false;
+
+    public event Action PlayerDie;
+    public event Action PlayerDieAnimation;
+    public event Action<float> DownHealth;
 
     private void Awake()
     {
+        _health = _healthMax;
         _waitForSeconds = new WaitForSeconds(_delay);
-        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
     {
-        if (_playerAttaker != null)
+        foreach (var enemy in _enemys)
         {
-            _playerAttaker.Attacked += TakeDamage;
+            enemy.EnemyDamage+=PlayerHit;
         }
+    }
 
-        if(_enemyAttackers != null)
+    private void Update()
+    {
+        if( _health == _healthMin)
         {
-            foreach (var enemyAttack in _enemyAttackers)
-            {
-                enemyAttack.Attaced += TakeDamage;
-            }
+            IsDead = true;
+
+            if(_takeDamages != null)
+                StopCoroutine(_takeDamages);
+            
+            _audioSource.PlayOneShot(_deathClip,0.5f);
+
+            PlayerDie?.Invoke();
+            PlayerDieAnimation?.Invoke();
+
+            _health = _healthMax;
+            DownHealth?.Invoke(_health);
         }
     }
 
     private void OnDisable()
     {
-        if (_playerAttaker != null)
+        foreach (var enemy in _enemys)
         {
-            _playerAttaker.Attacked -= TakeDamage;
-        }
-
-        if (_enemyAttackers != null)
-        {
-            foreach (var enemyAttack in _enemyAttackers)
-            {
-                enemyAttack.Attaced -= TakeDamage;
-            }
+            enemy.EnemyDamage-=PlayerHit;
         }
     }
 
-    private void TakeDamage()
+    private void PlayerHit(float Damage,bool inColision)
     {
-        if (_playerAttaker != null)
-        {
-            float direction = _enemyMover.Direction;
-
-            _rigidbody.AddForce(new Vector2(_damageForce.x * -direction, _damageForce.y), ForceMode2D.Impulse);
-            _enemyMover.enabled = false;
-        }
-
-        if (_numberTimes == 0)
-            StartCoroutine(ChangeColorTemporarily());
+        if (inColision && _health!=_healthMin)
+            _takeDamages= StartCoroutine(TakeDamage(Damage));
+        else if(inColision==false)
+            StopCoroutine(_takeDamages);
     }
 
-    private IEnumerator ChangeColorTemporarily()
+    private IEnumerator TakeDamage(float Damage)
     {
-        _numberTimes++;
-
-        if (gameObject.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer))
+        while(_health > _healthMin && IsDead==false)
         {
-            for (int i = 0; i < _numberTransfusions; i++)
+            _health-=Damage;
+
+            if (_health >= _healthMin)
             {
-                spriteRenderer.color = Color.red;
-                yield return _waitForSeconds;
-                spriteRenderer.color = Color.white;
-                yield return _waitForSeconds;
+                DownHealth?.Invoke(_health);
+            }
+            else
+            {
+                _health=_healthMin;
             }
 
-            _numberTimes = 0;
-
-            if (_enemyMover != null)
-            {
-                _enemyMover.enabled = true;
-            }
+            yield return _waitForSeconds;
         }
+
     }
 }
