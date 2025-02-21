@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,6 +8,11 @@ public class Player : MonoBehaviour
     [SerializeField] private Mover _mover;
     [SerializeField] private GroundDetector _groundDetector;
     [SerializeField] private PlayerAnimator _animator;
+    [SerializeField] private Attaker _attaker;
+    [SerializeField] private EnemyAttacker[] _enemyAttackers;
+    [SerializeField] private float _stopThresholdAttack = 2f;
+
+    public event Action Attacked;
 
     private void OnEnable()
     {
@@ -60,5 +66,13 @@ public class Player : MonoBehaviour
     private void OnPlayAttack(bool isAttacking)
     {
         _animator.PlayAttack(isAttacking);
+        
+        foreach (var enemy in _enemyAttackers)
+        {
+            if (isAttacking && (enemy.transform.position - transform.position).sqrMagnitude < _stopThresholdAttack)
+            {
+                Attacked?.Invoke();
+            }
+        }
     }
 }

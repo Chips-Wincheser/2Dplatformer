@@ -1,94 +1,77 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private List <Attack> _enemys;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _deathClip;
+    [SerializeField] private Attaker _playerAttaker;
+    [SerializeField] private EnemyAttacker[] _enemyAttackers;
 
-    private float _health;
-    private float _healthMax=100;
-    private float _healthMin=0;
-    private float _delay=0.2f;
-
-    private Coroutine _takeDamages;
     private WaitForSeconds _waitForSeconds;
-
-    public bool IsDead=false;
-
-    public event Action PlayerDie;
-    public event Action PlayerDieAnimation;
-    public event Action<float> DownHealth;
+    private float _delay = 0.5f;
+    private int _numberTimes = 0;
+    private int _numberTransfusions = 3;
 
     private void Awake()
     {
-        _health = _healthMax;
         _waitForSeconds = new WaitForSeconds(_delay);
     }
 
     private void OnEnable()
     {
-        foreach (var enemy in _enemys)
+        if (_playerAttaker != null)
         {
-            enemy.EnemyDamage+=PlayerHit;
+            _playerAttaker.Attacked += TakeDamage;
         }
-    }
 
-    private void Update()
-    {
-        if( _health == _healthMin)
+        if(_enemyAttackers != null)
         {
-            IsDead = true;
-
-            if(_takeDamages != null)
-                StopCoroutine(_takeDamages);
-            
-            _audioSource.PlayOneShot(_deathClip,0.5f);
-
-            PlayerDie?.Invoke();
-            PlayerDieAnimation?.Invoke();
-
-            _health = _healthMax;
-            DownHealth?.Invoke(_health);
+            foreach (var enemyAttack in _enemyAttackers)
+            {
+                enemyAttack.Attaced += TakeDamage;
+            }
         }
     }
 
     private void OnDisable()
     {
-        foreach (var enemy in _enemys)
+        if (_playerAttaker != null)
         {
-            enemy.EnemyDamage-=PlayerHit;
+            _playerAttaker.Attacked -= TakeDamage;
+        }
+
+        if (_enemyAttackers != null)
+        {
+            foreach (var enemyAttack in _enemyAttackers)
+            {
+                enemyAttack.Attaced -= TakeDamage;
+            }
         }
     }
 
-    private void PlayerHit(float Damage,bool inColision)
+    private void TakeDamage()
     {
-        if (inColision && _health!=_healthMin)
-            _takeDamages= StartCoroutine(TakeDamage(Damage));
-        else if(inColision==false)
-            StopCoroutine(_takeDamages);
+        if (_numberTimes == 0)
+            StartCoroutine(ChangeColorTemporarily());
     }
 
-    private IEnumerator TakeDamage(float Damage)
+    private IEnumerator ChangeColorTemporarily()
     {
-        while(_health > _healthMin && IsDead==false)
+        _numberTimes++;
+
+        if (gameObject.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer))
         {
-            _health-=Damage;
-
-            if (_health >= _healthMin)
+            for (int i = 0; i < _numberTransfusions; i++)
             {
-                DownHealth?.Invoke(_health);
-            }
-            else
-            {
-                _health=_healthMin;
+                spriteRenderer.color = Color.red;
+
+                yield return _waitForSeconds;
+
+                spriteRenderer.color = Color.white;
+
+                yield return _waitForSeconds;
             }
 
-            yield return _waitForSeconds;
+            _numberTimes = 0;
         }
-
     }
 }

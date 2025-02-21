@@ -5,14 +5,10 @@ using UnityEngine;
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _jumpHeight = 16f;
-    [SerializeField] private PlayerInput _playerInput;
-    [SerializeField] private GroundChecker _groundDetector;
-    [SerializeField] private Inventory _inventory;
+    [SerializeField] private GroundDetector _groundDetector;
 
     private Rigidbody2D _rigidbody;
-    private bool _canJump = true;
-    private bool _canDoubleJump = false;
-    private bool _hasUsedDoubleJump = false;
+    private bool _isJump;
 
     public event Action Jumped;
 
@@ -21,51 +17,19 @@ public class Jumper : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void OnEnable()
+    private void FixedUpdate()
     {
-        _playerInput.Jumping += Jump;
-        _groundDetector.OnJumpBlocked += TryJump;
-        _inventory.AcquiredDoubleJump += DoubleJump;
-    }
-
-    private void OnDisable()
-    {
-        _playerInput.Jumping -= Jump;
-        _groundDetector.OnJumpBlocked -= TryJump;
-        _inventory.AcquiredDoubleJump -= DoubleJump;
-    }
-
-    private void Jump()
-    {
-        if (_canJump)
+        if (_isJump)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
-            _canJump = false;
             Jumped?.Invoke();
-        }
-        else if (_canDoubleJump && !_hasUsedDoubleJump)
-        {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpHeight);
-            _hasUsedDoubleJump = true;
-            Jumped?.Invoke();
+            _isJump = false;
         }
     }
 
-    private void TryJump(bool jumpBlocked)
+    public void AttemptJump()
     {
-        if (jumpBlocked)
-        {
-            _canJump = false;
-        }
-        else
-        {
-            _canJump = true;
-            _hasUsedDoubleJump = false;
-        }
-    }
-
-    private void DoubleJump()
-    {
-        _canDoubleJump = true;
+        if (_groundDetector.IsGrounded)
+            _isJump = true;
     }
 }

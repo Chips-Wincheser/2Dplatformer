@@ -3,47 +3,53 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    private const KeyCode CodeKey = KeyCode.Space;
+    private const KeyCode CodeKey= KeyCode.Space;
     private const string Horizontal = "Horizontal";
 
-    private bool _isJump;
+    private bool _isAttacking;
 
     public event Action Jumping;
-    public event Action<float> Runing;
-    public event Action<float> PlayerStanding;
+    public event Action PlayerStanding;
+    public event Action<float> Running;
+    public event Action<bool> Attacked;
 
     private void Update()
     {
-        if (Input.GetKeyDown(CodeKey))
-        {
-            _isJump = true;
-        }
-    }
-
-    private void FixedUpdate()
-    {
         HandleJump();
         HandleMovement();
+        HandleAttack();
     }
 
     private void HandleMovement()
     {
         float horizontal = Input.GetAxisRaw(Horizontal);
-
-        Runing?.Invoke(horizontal);
+        Running?.Invoke(horizontal);
 
         if (horizontal == 0)
         {
-            PlayerStanding?.Invoke(horizontal);
+            PlayerStanding?.Invoke();
         }
     }
 
     private void HandleJump()
     {
-        if (_isJump)
+        if (Input.GetKeyDown(CodeKey))
         {
             Jumping?.Invoke();
-            _isJump= false;
+        }
+    }
+
+    private void HandleAttack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            _isAttacking= true;
+            Attacked?.Invoke(_isAttacking);   
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            _isAttacking=false;
+            Attacked?.Invoke(_isAttacking);
         }
     }
 }

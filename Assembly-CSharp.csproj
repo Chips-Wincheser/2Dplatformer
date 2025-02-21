@@ -62,7 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\Player\Rotator.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyAttack.cs" />
+    <Compile Include="Assets\Scripts\Player\Attaker.cs" />
     <Compile Include="Assets\Scripts\CoinSpawner.cs" />
     <Compile Include="Assets\Scripts\PlayerFollower.cs" />
     <Compile Include="Assets\Scripts\Player\Mover.cs" />
@@ -79,7 +79,8 @@
     <Compile Include="Assets\Scripts\Player\Jumper.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\Player\Health.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyAnimation.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyAttacker.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyAnimator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
