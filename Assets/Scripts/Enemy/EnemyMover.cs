@@ -25,7 +25,7 @@ public class EnemyMover : MonoBehaviour
 
         if ( _isBetween==false)
         {
-            PatrollingTerritory();
+            PatrolTerritory();
         }
         else
         {
@@ -35,7 +35,7 @@ public class EnemyMover : MonoBehaviour
         ComparisonDistance();
     }
 
-    private void PatrollingTerritory()
+    private void PatrolTerritory()
     {
         Rotate(_wayPoints[_currentWaypoint],out Vector3 directionToWaypoint);
 

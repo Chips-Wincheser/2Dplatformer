@@ -21,8 +21,8 @@ public class Player : MonoBehaviour
         _playerInput.PlayerStanding += OnStopRun;
         _playerInput.Attacked+=OnPlayAttack;
 
-        _groundDetector.PlayerIsFlying += OnFly;
-        _groundDetector.PlayerIsLanding += OnLand;
+        _groundDetector.PlayerFlew += OnFly;
+        _groundDetector.PlayerLanded += OnLand;
     }
 
     private void OnDisable()
@@ -32,30 +32,30 @@ public class Player : MonoBehaviour
         _playerInput.PlayerStanding -= OnStopRun;
         _playerInput.Attacked-=OnPlayAttack;
 
-        _groundDetector.PlayerIsFlying -= OnFly;
-        _groundDetector.PlayerIsLanding -= OnLand;
+        _groundDetector.PlayerFlew -= OnFly;
+        _groundDetector.PlayerLanded -= OnLand;
     }
 
     private void OnJump()
     {
         _jumper.AttemptJump();
-        _animator.PlayJumping();
+        _animator.StartJumping();
     }
 
     private void OnRun(float horizontal)
     {
         _mover.ProcessMovement(horizontal);
-        _animator.PlayRunning(horizontal != 0);
+        _animator.SetRunning(horizontal != 0);
     }
 
     private void OnStopRun()
     {
-        _animator.PlayRunning(false);
+        _animator.SetRunning(false);
     }
 
     private void OnFly()
     {
-        _animator.PlayFlying();
+        _animator.StartFlying();
     }
 
     private void OnLand()
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
 
     private void OnPlayAttack(bool isAttacking)
     {
-        _animator.PlayAttack(isAttacking);
+        _animator.SetAttacking(isAttacking);
         
         foreach (var enemy in _enemyAttackers)
         {

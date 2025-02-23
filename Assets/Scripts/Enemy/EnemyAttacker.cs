@@ -5,7 +5,7 @@ public class EnemyAttacker : MonoBehaviour
 {
     [SerializeField] private EnemyMover _enemyMover;
 
-    public event Action Attaced;
+    public event Action Attacked;
 
     private void OnEnable()
     {
@@ -21,7 +21,7 @@ public class EnemyAttacker : MonoBehaviour
     {
         if(isFarAway)
         {
-            Attaced?.Invoke();
+            Attacked?.Invoke();
         }
     }
 }

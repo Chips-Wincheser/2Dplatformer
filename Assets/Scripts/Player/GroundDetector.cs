@@ -9,8 +9,8 @@ public class GroundDetector : MonoBehaviour
 
     public bool IsGrounded => _isGroundedDown;
 
-    public event Action PlayerIsFlying;
-    public event Action PlayerIsLanding;
+    public event Action PlayerFlew;
+    public event Action PlayerLanded;
 
     private void OnEnable()
     {
@@ -33,11 +33,11 @@ public class GroundDetector : MonoBehaviour
     {
         if (_isGroundedDown)
         {
-            PlayerIsLanding?.Invoke();
+            PlayerLanded?.Invoke();
         }
         else
         {
-            PlayerIsFlying?.Invoke();
+            PlayerFlew?.Invoke();
         }
     }
 

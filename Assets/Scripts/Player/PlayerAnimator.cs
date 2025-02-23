@@ -8,17 +8,17 @@ public class PlayerAnimator : MonoBehaviour
     private readonly int _isRun = Animator.StringToHash("isRun");
     private readonly int _isAttack = Animator.StringToHash("isAttack");
 
-    public void PlayRunning(bool isRunning)
+    public void SetRunning(bool isRunning)
     {
         _animator.SetBool(_isRun, isRunning);
     }
 
-    public void PlayJumping()
+    public void StartJumping()
     {
         _animator.SetInteger(_fly, 1);
     }
 
-    public void PlayFlying()
+    public void StartFlying()
     {
         _animator.SetInteger(_fly, 0);
     }
@@ -28,7 +28,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetInteger(_fly, -1);
     }
 
-    public void PlayAttack(bool isAttacking)
+    public void SetAttacking(bool isAttacking)
     {
         _animator.SetBool(_isAttack, isAttacking);
     }

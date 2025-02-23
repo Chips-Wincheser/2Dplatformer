@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
         {
             foreach (var enemyAttack in _enemyAttackers)
             {
-                enemyAttack.Attaced += TakeDamage;
+                enemyAttack.Attacked += TakeDamage;
             }
         }
     }
@@ -43,7 +43,7 @@ public class Health : MonoBehaviour
         {
             foreach (var enemyAttack in _enemyAttackers)
             {
-                enemyAttack.Attaced -= TakeDamage;
+                enemyAttack.Attacked -= TakeDamage;
             }
         }
     }
