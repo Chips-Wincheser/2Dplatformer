@@ -5,9 +5,7 @@ public class GroundDetector : MonoBehaviour
 {
     [SerializeField] private GroundTrigger _groundTrigger;
 
-    private bool _isGroundedDown;
-
-    public bool IsGrounded => _isGroundedDown;
+    public bool IsGrounded { get; private set; }
 
     public event Action PlayerFlew;
     public event Action PlayerLanded;
@@ -31,7 +29,7 @@ public class GroundDetector : MonoBehaviour
 
     private void NotifyPlayerState()
     {
-        if (_isGroundedDown)
+        if (IsGrounded)
         {
             PlayerLanded?.Invoke();
         }
@@ -43,11 +41,11 @@ public class GroundDetector : MonoBehaviour
 
     private void TouchGround()
     {
-        _isGroundedDown= true;
+        IsGrounded= true;
     }
 
     private void LostGround()
     {
-        _isGroundedDown= false;
+        IsGrounded= false;
     }
 }

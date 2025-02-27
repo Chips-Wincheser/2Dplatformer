@@ -1,49 +1,31 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Health : MonoBehaviour
 {
-    [SerializeField] private Attaker _playerAttaker;
-    [SerializeField] private EnemyAttacker[] _enemyAttackers;
-
     private WaitForSeconds _waitForSeconds;
+    private SpriteRenderer _spriteRenderer;
     private float _delay = 0.5f;
     private int _numberTimes = 0;
     private int _numberTransfusions = 3;
+    private bool _isTakingDamage = false;
+
 
     private void Awake()
     {
+        _spriteRenderer=GetComponent<SpriteRenderer>();
         _waitForSeconds = new WaitForSeconds(_delay);
     }
 
-    private void OnEnable()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_playerAttaker != null)
+        if(collision.TryGetComponent<Health>(out Health _))
         {
-            _playerAttaker.Attacked += TakeDamage;
-        }
-
-        if(_enemyAttackers != null)
-        {
-            foreach (var enemyAttack in _enemyAttackers)
+            if (_isTakingDamage == false)
             {
-                enemyAttack.Attacked += TakeDamage;
-            }
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_playerAttaker != null)
-        {
-            _playerAttaker.Attacked -= TakeDamage;
-        }
-
-        if (_enemyAttackers != null)
-        {
-            foreach (var enemyAttack in _enemyAttackers)
-            {
-                enemyAttack.Attacked -= TakeDamage;
+                _isTakingDamage = true;
+                TakeDamage();
             }
         }
     }
@@ -58,20 +40,18 @@ public class Health : MonoBehaviour
     {
         _numberTimes++;
 
-        if (gameObject.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer))
+        for (int i = 0; i < _numberTransfusions; i++)
         {
-            for (int i = 0; i < _numberTransfusions; i++)
-            {
-                spriteRenderer.color = Color.red;
+            _spriteRenderer.color = Color.red;
 
-                yield return _waitForSeconds;
+            yield return _waitForSeconds;
 
-                spriteRenderer.color = Color.white;
+            _spriteRenderer.color = Color.white;
 
-                yield return _waitForSeconds;
-            }
-
-            _numberTimes = 0;
+            yield return _waitForSeconds;
         }
+
+        _numberTimes = 0;
+        _isTakingDamage = false;
     }
 }

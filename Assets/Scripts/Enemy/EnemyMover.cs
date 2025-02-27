@@ -12,12 +12,16 @@ public class EnemyMover : MonoBehaviour
 
     private int _currentWaypoint = 0;
     private float _maximumPlayerDisplacement = 5f;
-    private float _direction = 1;
     private bool _isBetween;
     private bool _isFarAway;
 
     public event Action<bool> CameClose;
-    public float Direction => _direction;
+    public float Direction { get; private set; }
+
+    private void Start()
+    {
+        Direction=1;
+    }
 
     private void Update()
     {
@@ -75,10 +79,10 @@ public class EnemyMover : MonoBehaviour
         directionToWaypoint = target.position - transform.position;
         float newDirection = Mathf.Sign(directionToWaypoint.x);
 
-        if (newDirection != _direction)
+        if (newDirection != Direction)
         {
-            _direction = newDirection;
-            _rotator.Rotate(_direction);
+            Direction = newDirection;
+            _rotator.Rotate(Direction);
         }
     }
 
