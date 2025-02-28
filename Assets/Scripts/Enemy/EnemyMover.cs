@@ -16,11 +16,11 @@ public class EnemyMover : MonoBehaviour
     private bool _isFarAway;
 
     public event Action<bool> CameClose;
-    public float Direction { get; private set; }
+    public float DirectionX { get; private set; }
 
     private void Start()
     {
-        Direction=1;
+        DirectionX=1;
     }
 
     private void Update()
@@ -79,10 +79,10 @@ public class EnemyMover : MonoBehaviour
         directionToWaypoint = target.position - transform.position;
         float newDirection = Mathf.Sign(directionToWaypoint.x);
 
-        if (newDirection != Direction)
+        if (newDirection != DirectionX)
         {
-            Direction = newDirection;
-            _rotator.Rotate(Direction);
+            DirectionX = newDirection;
+            _rotator.Rotate(DirectionX);
         }
     }
 

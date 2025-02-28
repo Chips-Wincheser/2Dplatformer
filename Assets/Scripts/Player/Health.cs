@@ -1,57 +1,28 @@
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class Health : MonoBehaviour
 {
-    private WaitForSeconds _waitForSeconds;
-    private SpriteRenderer _spriteRenderer;
-    private float _delay = 0.5f;
-    private int _numberTimes = 0;
-    private int _numberTransfusions = 3;
-    private bool _isTakingDamage = false;
-
+    [SerializeField] private int _maxHealth = 3;
+    private int _currentHealth;
 
     private void Awake()
     {
-        _spriteRenderer=GetComponent<SpriteRenderer>();
-        _waitForSeconds = new WaitForSeconds(_delay);
+        _currentHealth = _maxHealth;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void TakeDamage(int damage)
     {
-        if(collision.TryGetComponent<Health>(out Health _))
+        _currentHealth -= damage;
+        _currentHealth = Mathf.Max(_currentHealth, 0);
+
+        if (_currentHealth == 0)
         {
-            if (_isTakingDamage == false)
-            {
-                _isTakingDamage = true;
-                TakeDamage();
-            }
+            Die();
         }
     }
 
-    private void TakeDamage()
+    private void Die()
     {
-        if (_numberTimes == 0)
-            StartCoroutine(ChangeColorTemporarily());
-    }
-
-    private IEnumerator ChangeColorTemporarily()
-    {
-        _numberTimes++;
-
-        for (int i = 0; i < _numberTransfusions; i++)
-        {
-            _spriteRenderer.color = Color.red;
-
-            yield return _waitForSeconds;
-
-            _spriteRenderer.color = Color.white;
-
-            yield return _waitForSeconds;
-        }
-
-        _numberTimes = 0;
-        _isTakingDamage = false;
+        Destroy(gameObject);
     }
 }
