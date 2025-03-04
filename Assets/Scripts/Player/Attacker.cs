@@ -10,19 +10,22 @@ public class Attacker : MonoBehaviour
     {
         if (collision.TryGetComponent<Health>(out Health health) && _isAttacking==false)
         {
-            _isAttacking=true;
-            health.TakeDamage(_damage);
-
-            if (collision.TryGetComponent<DamageEffect>(out DamageEffect damageEffect))
+            if (_damage>0)
             {
-                damageEffect.PlayDamageEffect();
+                _isAttacking=true;
+                health.TakeDamage(_damage);
+
+                if (collision.TryGetComponent<DamageEffect>(out DamageEffect damageEffect))
+                {
+                    damageEffect.PlayDamageEffect();
+                }
             }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<Health>(out Health health))
+        if (collision.TryGetComponent<Health>(out Health _))
         {
             _isAttacking=false;
         }

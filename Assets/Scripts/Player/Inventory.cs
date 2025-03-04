@@ -3,14 +3,12 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private List<Coin> _coins = new List<Coin>();
+    public List<Coin> Coins { get; private set; }
+    public List<Heart> Hearts { get; private set; }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Start()
     {
-        if (collision.TryGetComponent<Coin>(out Coin coin))
-        {
-            _coins.Add(coin);
-            coin.Collect();
-        }
+        Coins= new List<Coin>();
+        Hearts= new List<Heart>();
     }
 }

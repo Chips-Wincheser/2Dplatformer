@@ -21,6 +21,7 @@ public class CoinSpawner : MonoBehaviour
 
     private void OnCoinCollected(Coin coin)
     {
+        coin.Collected -= OnCoinCollected;
         Destroy(coin.gameObject);
     }
 }

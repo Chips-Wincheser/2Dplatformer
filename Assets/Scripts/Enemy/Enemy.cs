@@ -3,20 +3,20 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyAnimator _enemyAnimation;
-    [SerializeField] private EnemyMover _enemyMover;
+    [SerializeField] private EnemyChaser _enemyChaser;
 
     private void OnEnable()
     {
-        _enemyMover.CameClose+=OnPlayAttack;
+        _enemyChaser.CameClose += OnPlayAttack;
     }
 
     private void OnDisable()
     {
-        _enemyMover.CameClose-=OnPlayAttack;
+        _enemyChaser.CameClose -= OnPlayAttack;
     }
 
-    private void OnPlayAttack(bool isFarAway)
+    private void OnPlayAttack(bool isClose)
     {
-        _enemyAnimation.PlayAttack(isFarAway);
+        _enemyAnimation.PlayAttack(isClose);
     }
 }

@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class Heart : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public event Action<Heart> Collected;
+
+    public void Collect()
     {
-        Destroy(gameObject);
+        Collected?.Invoke(this);
     }
 }

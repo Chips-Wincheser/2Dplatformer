@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxHealth = 3;
     private int _currentHealth;
+
+    public event Action Damaged;
 
     private void Awake()
     {
@@ -12,17 +15,21 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        _currentHealth -= damage;
-        _currentHealth = Mathf.Max(_currentHealth, 0);
-
-        if (_currentHealth == 0)
+        if(damage>0)
         {
-            Die();
+            _currentHealth = Mathf.Clamp(_currentHealth - damage, 0, _maxHealth);
+            Damaged?.Invoke();
+
+            if (_currentHealth == 0)
+            {
+                Die();
+            }
         }
     }
 
     private void Die()
     {
-        Destroy(gameObject);
+        if(gameObject.TryGetComponent<Player>(out _)==false)
+            Destroy(gameObject);
     }
 }
