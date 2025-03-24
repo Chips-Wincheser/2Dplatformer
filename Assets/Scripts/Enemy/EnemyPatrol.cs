@@ -11,7 +11,6 @@ public class EnemyPatrol : MonoBehaviour
     private void Update()
     {
         Transform targetWaypoint = _wayPoints[_currentWaypoint];
-
         _mover.MoveTo(targetWaypoint.position);
         _mover.RotateTowards(targetWaypoint);
 

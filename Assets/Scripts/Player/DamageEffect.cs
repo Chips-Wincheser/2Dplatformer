@@ -1,12 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer), typeof(Health))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class DamageEffect : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
     private WaitForSeconds _waitForSeconds;
-    private Health _health;
 
     private int _numberTransfusions = 3;
     private float _delay = 0.5f;
@@ -15,21 +14,9 @@ public class DamageEffect : MonoBehaviour
 
     private void Awake()
     {
-        _health = GetComponent<Health>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _waitForSeconds = new WaitForSeconds(_delay);
     }
-
-    private void OnEnable()
-    {
-        _health.Damaged += PlayDamageEffect;
-    }
-
-    private void OnDisable()
-    {
-        _health.Damaged -= PlayDamageEffect;
-    }
-
     public void PlayDamageEffect()
     {
         if (!_isTakingDamage)

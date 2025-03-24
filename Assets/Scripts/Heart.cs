@@ -8,5 +8,6 @@ public class Heart : MonoBehaviour
     public void Collect()
     {
         Collected?.Invoke(this);
+        Destroy(gameObject);
     }
 }

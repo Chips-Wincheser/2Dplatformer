@@ -12,10 +12,11 @@ public class Collector : MonoBehaviour
             coin.Collect();
         }
 
-        if (collision.TryGetComponent<Heart>(out Heart heart))
+        if (collision.TryGetComponent<Heart>(out Heart heart) && this.TryGetComponent<Health>(out Health health))
         {
             _inventory.Hearts.Add(heart);
             heart.Collect();
+            health.Treatment(15);
         }
     }
 }
