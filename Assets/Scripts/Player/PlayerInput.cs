@@ -12,12 +12,14 @@ public class PlayerInput : MonoBehaviour
     public event Action PlayerStanding;
     public event Action<float> Running;
     public event Action<bool> Attacked;
+    public event Action VampirismActivated;
 
     private void Update()
     {
         HandleJump();
         HandleMovement();
         HandleAttack();
+        HandleVampirism();
     }
 
     private void HandleMovement()
@@ -50,6 +52,13 @@ public class PlayerInput : MonoBehaviour
         {
             _isAttacking=false;
             Attacked?.Invoke(_isAttacking);
+        }
+    }
+    private void HandleVampirism()
+    {
+        if(Input.GetMouseButtonDown(1))
+        {
+            VampirismActivated?.Invoke();
         }
     }
 }
