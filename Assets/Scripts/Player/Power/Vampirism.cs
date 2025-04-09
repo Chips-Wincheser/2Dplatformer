@@ -4,15 +4,22 @@ using UnityEngine;
 public class Vampirism : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private Health _playerHealth;
     [SerializeField] private HandlerTriggerPower _triggerPower;
     [SerializeField] private AbilityTimer _cooldownManager;
 
     private Health _closestEnemy;
-    
-    private WaitForSeconds _waitForSeconds;
-    private int _tickInterval = 1;
 
-    private int _damage = 1;
+    private float _damageInterval = 0.1f;
+    private WaitForSeconds _waitForSeconds;
+
+    private int _stepHealth = 1;
+
+    private void Awake()
+    {
+        _playerHealth=GetComponentInParent<Health>();
+        _waitForSeconds =new WaitForSeconds(_damageInterval);
+    }
 
     private void OnEnable()
     {
@@ -24,18 +31,11 @@ public class Vampirism : MonoBehaviour
         _playerInput.VampirismActivated -= HandleVampirism;
     }
 
-    private void Awake()
-    {
-        _waitForSeconds=new WaitForSeconds(_tickInterval);
-    }
-
     private void HandleVampirism()
     {
-        _triggerPower.SpriteCollisionToggle(true);
-        
         if (_cooldownManager.IsOnCooldown==false)
         {
-            FindClosestEnemy();
+            _closestEnemy=FindClosestEnemy();
 
             _cooldownManager.StartCooldown();
             StartCoroutine(ApplyVampirism());
@@ -46,18 +46,20 @@ public class Vampirism : MonoBehaviour
     {
         while (_cooldownManager.IsVampirismActive)
         {
-            if (_closestEnemy != null)
+            if (_closestEnemy != null && _playerHealth!=null)
             {
-                _closestEnemy.TakeDamage(_damage);
+                _closestEnemy.TakeDamage(_stepHealth);
+                _playerHealth.Treatment(_stepHealth);
             }
 
             yield return _waitForSeconds;
         }
     }
 
-    private void FindClosestEnemy()
+    private Health FindClosestEnemy()
     {
         float closestDistance = float.MaxValue;
+        Health closestEnemy = null;
 
         foreach (Health enemy in _triggerPower.EnemysInTrigger)
         {
@@ -66,8 +68,10 @@ public class Vampirism : MonoBehaviour
             if (enemyDistance < closestDistance)
             {
                 closestDistance = enemyDistance;
-                _closestEnemy = enemy;
+                closestEnemy = enemy;
             }
         }
+
+        return closestEnemy;
     }
 }

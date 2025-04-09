@@ -3,14 +3,10 @@ using UnityEngine;
 
 public class HandlerTriggerPower : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-
     public List<Health> EnemysInTrigger {  get; private set; }
 
     private void Awake()
     {
-        SpriteCollisionToggle(false);
-
         EnemysInTrigger = new List<Health>();
     }
 
@@ -22,14 +18,11 @@ public class HandlerTriggerPower : MonoBehaviour
         }
     }
 
-    public void SpriteCollisionToggle(bool isActive)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        _spriteRenderer.enabled = isActive;
-    }
-
-    public void ClearEnemysList()
-    {
-        Debug.Log("Отчистка");
-        EnemysInTrigger.Clear();
+        if (collision.TryGetComponent<Health>(out Health enemyHealth))
+        {
+            EnemysInTrigger.Remove(enemyHealth);
+        }
     }
 }

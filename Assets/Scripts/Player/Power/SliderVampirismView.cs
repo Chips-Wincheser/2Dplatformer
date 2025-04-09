@@ -5,6 +5,11 @@ public class SliderVampirismView : MonoBehaviour
 {
     [SerializeField] private UnityEngine.UI.Slider _vampirismSlider;
 
+    private void Awake()
+    {
+        _vampirismSlider.gameObject.SetActive(false);
+    }
+
     public void StartVampirism(float vampirismDuration, float cooldownDuration)
     {
         _vampirismSlider.gameObject.SetActive(true);
@@ -28,5 +33,7 @@ public class SliderVampirismView : MonoBehaviour
             _vampirismSlider.value = time / cooldownDuration;
             yield return null;
         }
+
+        _vampirismSlider.gameObject.SetActive(false);
     }
 }

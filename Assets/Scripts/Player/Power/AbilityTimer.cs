@@ -6,7 +6,7 @@ public class AbilityTimer : MonoBehaviour
     [SerializeField] private SliderVampirismView _slider;
     [SerializeField] private HandlerTriggerPower _triggerPower;
 
-    private float _vampirismDuration = 6f;
+    private float _vampirismDuration = 2f;
     private float _cooldownTime = 4f;
 
     private WaitForSeconds _waitForVampirismDuration;
@@ -37,9 +37,6 @@ public class AbilityTimer : MonoBehaviour
         
         IsVampirismActive = false;
 
-        _triggerPower.ClearEnemysList();
-        _triggerPower.SpriteCollisionToggle(false);
-        
         yield return _waitForCooldownDuration;
         
         IsOnCooldown = false;

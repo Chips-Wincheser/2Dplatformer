@@ -26,7 +26,7 @@ public class Health : MonoBehaviour
 
     public void Treatment(int healingAmount)
     {
-        if(healingAmount>0)
+        if(healingAmount>0 && _currentValue< MaxValue)
         {
             _currentValue = Mathf.Clamp(_currentValue + healingAmount, 0, MaxValue);
             Updated?.Invoke(_currentValue/MaxValue);
